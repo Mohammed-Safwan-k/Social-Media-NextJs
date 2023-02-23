@@ -1,19 +1,16 @@
-import Layout from "../components/Layout";
-import PostFormCard from "../components/PostFormCard";
-import PostCard from "../components/PostCard";
-import { useSession } from "@supabase/auth-helpers-react";
+import Card from "@/components/Card";
+import NavigationCard from "@/components/NavigationCard";
 
 export default function Home() {
-  const session = useSession();
-
-  if (!session) {
-    return <LoginPage />;
-  }
-
   return (
-    <Layout>
-      <PostFormCard />
-      <PostCard />
-    </Layout>
+    <div className="flex mt-4 max-w-4xl mx-auto gap-6 ">
+      <div className="w-1/3">
+        <NavigationCard />
+      </div>
+      <div className="grow">
+        <Card> form here </Card>
+        <Card> first post test </Card>
+      </div>
+    </div>
   );
 }
