@@ -10,7 +10,7 @@ module.exports = {
       colors: {
         socialBg: "#E9EDF5",
         socialBlue: "#218DFA",
-        socialGreen: "#2EEC00",
+        socialOrange: "#FF6100",
       },
     },
   },
