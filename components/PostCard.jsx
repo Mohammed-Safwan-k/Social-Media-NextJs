@@ -58,7 +58,10 @@ export default function PostCard() {
             <div className="relative">
               {dropdownOpen && (
                 <div className="absolute right-0 bg-white shadow-md shadow-gray-300 p-3 rounded-sm border border-gray-100 w-52">
-                  <a href="" className="flex py-2 px-2 gap-2 ">
+                  <a
+                    href=""
+                    className="flex gap-3 py-2 my-2 hover:bg-socialOrange hover:bg-opacity-70 hover:text-white -mx-2 px-4 rounded-md transition-all hover:scale-110 hover:shadow-md shadow-gray-300"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -75,7 +78,10 @@ export default function PostCard() {
                     </svg>
                     Save Post
                   </a>
-                  <a href="" className="flex py-2 px-2 gap-2 ">
+                  <a
+                    href=""
+                    className="flex gap-3 py-2 my-2 hover:bg-socialOrange hover:bg-opacity-70 hover:text-white -mx-2 px-4 rounded-md transition-all hover:scale-110 hover:shadow-md shadow-gray-300"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -92,7 +98,10 @@ export default function PostCard() {
                     </svg>
                     Turn notifications
                   </a>
-                  <a href="" className="flex py-2 px-2 gap-2 ">
+                  <a
+                    href=""
+                    className="flex gap-3 py-2 my-2 hover:bg-socialOrange hover:bg-opacity-70 hover:text-white -mx-2 px-4 rounded-md transition-all hover:scale-110 hover:shadow-md shadow-gray-300"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -109,7 +118,10 @@ export default function PostCard() {
                     </svg>
                     Hide Post
                   </a>
-                  <a href="" className="flex py-2 px-2 gap-2 ">
+                  <a
+                    href=""
+                    className="flex gap-3 py-2 my-2 hover:bg-socialOrange hover:bg-opacity-70 hover:text-white -mx-2 px-4 rounded-md transition-all hover:scale-110 hover:shadow-md shadow-gray-300"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -126,7 +138,10 @@ export default function PostCard() {
                     </svg>
                     Delete
                   </a>
-                  <a href="" className="flex py-2 px-2 gap-2 ">
+                  <a
+                    href=""
+                    className="flex gap-3 py-2 my-2 hover:bg-socialOrange hover:bg-opacity-70 hover:text-white -mx-2 px-4 rounded-md transition-all hover:scale-110 hover:shadow-md shadow-gray-300"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
