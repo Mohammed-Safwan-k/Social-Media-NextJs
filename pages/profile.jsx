@@ -21,8 +21,10 @@ export default function ProfilePage() {
     <Layout>
       <Card noPadding={true}>
         <div className="relative overflow-hidden rounded-md">
-          <div className="h-36 overflow-hidden flex justify-center items-center">
-            <img src="https://images.unsplash.com/photo-1498503182468-3b51cbb6cb24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGdyZWVjZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60" />
+          <div className="h-36 overflow-hidden flex justify-center items-center relative">
+            <div>
+              <img src="https://images.unsplash.com/photo-1498503182468-3b51cbb6cb24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGdyZWVjZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60" />
+            </div>
           </div>
           <div className="absolute top-24 left-4">
             <Avatar size={"lg"} />

@@ -181,11 +181,14 @@ export default function PostCard() {
           impedit ab in sed, consequuntur temporibus quibusdam dicta aliquam
           saepe!
         </p>
-        <div className="rounded-md overflow-hidden">
-          <img
-            src="https://images.unsplash.com/photo-1534695215921-52f8a19e7909?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Z3JlZWNlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60"
-            alt=""
-          />
+        <div className="flex gap-4">
+          <div className="">
+            <img
+              className="rounded-md"
+              src="https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Z3JlZWNlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60"
+              alt=""
+            />
+          </div>
         </div>
       </div>
       <div className="mt-5 flex gap-8">
