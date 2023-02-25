@@ -1,7 +1,7 @@
 export default function Avatar({ size }) {
   let width = "w-12 h-12";
   if (size === "lg") {
-    width = "w-36 h-36";
+    width = "md:w-36 md:h-36 w-24 h-24";
   }
   return (
     <div className={`${width} rounded-full overflow-hidden`}>
