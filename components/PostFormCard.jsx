@@ -5,6 +5,7 @@ import Card from "./Card";
 
 export default function PostFormCard() {
   const [profile, setProfile] = useState(null);
+  const [content, setContent] = useState("");
   const supabase = useSupabaseClient();
   const session = useSession();
   useEffect(() => {
@@ -19,6 +20,22 @@ export default function PostFormCard() {
         }
       });
   }, []);
+
+  const createPost = () => {
+    supabase
+      .from("posts")
+      .insert({
+        author: session.user.id,
+        content: content,
+      })
+      .then((response) => {
+        if (!response.error) {
+          setContent("");
+          alert("Post Created Successfully");
+        }
+      });
+  };
+
   return (
     <Card>
       <div className="flex gap-2">
@@ -27,6 +44,8 @@ export default function PostFormCard() {
         </div>
         <textarea
           className="grow p-3 h-14"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
           placeholder={`What's on your mind , ${profile?.name} ?`}
         />
       </div>
@@ -94,7 +113,10 @@ export default function PostFormCard() {
           </button>
         </div>
         <div className="grow text-right">
-          <button className="bg-socialBlue text-white px-6 py-1 rounded-md">
+          <button
+            onClick={createPost}
+            className="bg-socialBlue text-white px-6 py-1 rounded-md"
+          >
             Share
           </button>
         </div>
