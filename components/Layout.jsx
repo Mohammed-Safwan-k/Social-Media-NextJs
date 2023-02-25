@@ -1,13 +1,14 @@
 import NavigationCard from "./NavigationCard";
 
-
-export default function Layout({ children }) {
+export default function Layout({ children, hideNavigation }) {
   return (
     <div className="flex mt-4 max-w-4xl mx-auto gap-6 ">
-      <div className="w-3/12">
-        <NavigationCard />
-      </div>
-      <div className="w-9/12">{children}</div>
+      {!hideNavigation && (
+        <div className="w-3/12">
+          <NavigationCard />
+        </div>
+      )}
+      <div className={hideNavigation ? "w-full" : "w-9/12"}>{children}</div>
     </div>
   );
 }
