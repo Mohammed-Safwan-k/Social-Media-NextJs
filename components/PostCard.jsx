@@ -9,6 +9,7 @@ import { UserContext } from "@/contexts/UserContext";
 export default function PostCard({
   content,
   created_at,
+  photos,
   profiles: authorProfile,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -181,15 +182,15 @@ export default function PostCard({
       </div>
       <div>
         <p className="my-3 text-sm">{content}</p>
-        <div className="flex gap-4">
-          <div className="">
-            <img
-              className="rounded-md"
-              src="https://images.unsplash.com/photo-1530841377377-3ff06c0ca713?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Z3JlZWNlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=600&q=60"
-              alt=""
-            />
+        {photos.length > 0 && (
+          <div className="flex gap-4">
+            {photos.map((photo) => (
+              <div className="" key={photo}>
+                <img className="rounded-md" src={photo} alt="" />
+              </div>
+            ))}
           </div>
-        </div>
+        )}
       </div>
       <div className="mt-5 flex gap-8">
         <button className="flex gap-2 items-center">
