@@ -1,9 +1,10 @@
 import Avatar from "@/components/Avatar";
 import Card from "@/components/Card";
+import Cover from "@/components/Cover";
 import FriendInfo from "@/components/FriendInfo";
 import Layout from "@/components/Layout";
 import PostCard from "@/components/PostCard";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -12,6 +13,7 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
 
   const router = useRouter();
+  const session = useSession();
   const userId = router.query.id;
 
   const supabase = useSupabaseClient();
@@ -19,6 +21,10 @@ export default function ProfilePage() {
     if (!userId) {
       return;
     }
+    fetchUser();
+  }, [userId]);
+
+  const fetchUser = () => {
     supabase
       .from("profiles")
       .select()
@@ -31,7 +37,7 @@ export default function ProfilePage() {
           setProfile(result.data[0]);
         }
       });
-  }, [userId]);
+  };
 
   const { asPath: pathname } = router;
   const isPosts = pathname.includes("posts") || pathname === "/profile";
@@ -42,22 +48,25 @@ export default function ProfilePage() {
     "flex gap-1 px-4 py-1  items-center border-b-4 border-b-white";
   const activeTabClasses =
     "flex gap-1 px-4 py-1  items-center border-socialOrange border-b-4 text-socialOrange font-bold";
+
+  const isMyUser = userId === session?.user?.id;
+
   return (
     <Layout>
       <Card noPadding={true}>
         <div className="relative overflow-hidden rounded-md">
-          <div className="h-36 overflow-hidden flex justify-center items-center relative">
-            <div>
-              <img src="https://images.unsplash.com/photo-1498503182468-3b51cbb6cb24?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fGdyZWVjZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=600&q=60" />
-            </div>
-          </div>
-          <div className="absolute top-24 left-4">
+          <Cover
+            url={profile?.cover}
+            editable={isMyUser}
+            onChange={fetchUser}
+          />
+          <div className="absolute top-24 left-4 z-20">
             {profile && <Avatar url={profile?.avatar} size={"lg"} />}
           </div>
           <div className="p-4 pt-0 md:pt-4 pb-0">
             <div className="ml-24 md:ml-40">
               <h1 className="text-3xl font-bold">{profile?.name}</h1>
-              <div className="text-gray-500 leading-4">Kerala, India</div>
+              <div className="text-gray-500 leading-4">{profile?.place}</div>
             </div>
             <div className="mt-4 md:mt-10 flex gap-0">
               <Link
