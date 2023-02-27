@@ -16,12 +16,15 @@ export default function PostCard({
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [likes, setLikes] = useState([]);
+  const [comments, setComments] = useState([]);
+  const [commentText, setCommentText] = useState("");
   const { profile: myProfile } = useContext(UserContext);
 
   const supabase = useSupabaseClient();
 
   useEffect(() => {
     fetchLikes();
+    fetchComments();
   }, []);
 
   function fetchLikes() {
@@ -30,6 +33,16 @@ export default function PostCard({
       .select()
       .eq("post_id", id)
       .then((result) => setLikes(result.data));
+  }
+
+  function fetchComments() {
+    supabase
+      .from("posts")
+      .select("*,profiles(*)")
+      .eq("parent", id)
+      .then((result) => {
+        setComments(result.data);
+      });
   }
 
   function openDropdown(e) {
@@ -63,6 +76,21 @@ export default function PostCard({
       })
       .then((result) => {
         fetchLikes();
+      });
+  }
+
+  function postComment(ev) {
+    ev.preventDefault();
+    supabase
+      .from("posts")
+      .insert({
+        content: commentText,
+        author: myProfile.id,
+        parent: id,
+      })
+      .then((result) => {
+        fetchComments();
+        setCommentText("");
       });
   }
 
@@ -269,7 +297,7 @@ export default function PostCard({
               d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 011.037-.443 48.282 48.282 0 005.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"
             />
           </svg>
-          12
+          {comments?.length}
         </button>
         <button className="flex gap-2 items-center">
           <svg
@@ -294,10 +322,14 @@ export default function PostCard({
           <Avatar url={myProfile?.avatar} />
         </div>
         <div className="border grow rounded-full relative">
-          <textarea
-            className="block w-full p-3 px-4 overflow-hidden h-12 rounded-full"
-            placeholder="Leave a Comment"
-          />
+          <form onSubmit={postComment}>
+            <input
+              value={commentText}
+              onChange={(ev) => setCommentText(ev.target.value)}
+              className="block w-full p-3 px-4 overflow-hidden h-12 rounded-full"
+              placeholder="Leave a Comment"
+            />
+          </form>
           <button className="absolute top-3 right-3 text-gray-400">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -315,6 +347,30 @@ export default function PostCard({
             </svg>
           </button>
         </div>
+      </div>
+      <div>
+        {comments.length > 0 &&
+          comments.map((comment) => (
+            <div className="mt-2 flex gap-2 items-center" key={comment.id}>
+              <Avatar url={comment?.profiles?.avatar} />
+              <div className="bg-gray-200 py-2 px-4 rounded-3xl">
+                <div>
+                  <Link href={"/profile/" + comment.profiles.id}>
+                    <span className="hover:underline font-semibold mr-1">
+                      {comment?.profiles?.name}
+                    </span>
+                  </Link>
+                  <span className="text-sm text-gray-400">
+                    <ReactTimeAgo
+                      timeStyle={"twitter"}
+                      date={Date.parse(comment.created_at)}
+                    />
+                  </span>
+                </div>
+                <p className="text-sm">{comment?.content}</p>
+              </div>
+            </div>
+          ))}
       </div>
     </Card>
   );
