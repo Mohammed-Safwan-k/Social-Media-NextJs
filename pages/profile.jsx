@@ -3,11 +3,36 @@ import Card from "@/components/Card";
 import FriendInfo from "@/components/FriendInfo";
 import Layout from "@/components/Layout";
 import PostCard from "@/components/PostCard";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function ProfilePage() {
+  const [profile, setProfile] = useState(null);
+
   const router = useRouter();
+  const userId = router.query.id;
+
+  const supabase = useSupabaseClient();
+  useEffect(() => {
+    if (!userId) {
+      return;
+    }
+    supabase
+      .from("profiles")
+      .select()
+      .eq("id", userId)
+      .then((result) => {
+        if (result.error) {
+          throw result.error;
+        }
+        if (result.data) {
+          setProfile(result.data[0]);
+        }
+      });
+  }, [userId]);
+
   const { asPath: pathname } = router;
   const isPosts = pathname.includes("posts") || pathname === "/profile";
   const isAbout = pathname.includes("about");
@@ -27,11 +52,11 @@ export default function ProfilePage() {
             </div>
           </div>
           <div className="absolute top-24 left-4">
-            <Avatar size={"lg"} />
+            {profile && <Avatar url={profile?.avatar} size={"lg"} />}
           </div>
           <div className="p-4 pt-0 md:pt-4 pb-0">
             <div className="ml-24 md:ml-40">
-              <h1 className="text-3xl font-bold">Safwan</h1>
+              <h1 className="text-3xl font-bold">{profile?.name}</h1>
               <div className="text-gray-500 leading-4">Kerala, India</div>
             </div>
             <div className="mt-4 md:mt-10 flex gap-0">

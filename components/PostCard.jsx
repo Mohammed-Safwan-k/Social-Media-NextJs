@@ -26,7 +26,7 @@ export default function PostCard({
     <Card>
       <div className="flex gap-3">
         <div>
-          <Link href={"/profile"}>
+          <Link href={"/profile/" + authorProfile.id}>
             <span href="" className="cursor-pointer">
               <Avatar url={authorProfile.avatar} />
             </span>
@@ -34,7 +34,7 @@ export default function PostCard({
         </div>
         <div className="grow">
           <p>
-            <Link href={"/profile"}>
+            <Link href={"/profile/" + authorProfile.id}>
               <span
                 className="font-semibold hover:underline cursor-pointer"
                 href=""
