@@ -1,11 +1,18 @@
 import Avatar from "./Avatar";
 import Card from "./Card";
 import ClickOutHandler from "react-clickout-handler";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Link from "next/link";
+import ReactTimeAgo from "react-time-ago";
+import { UserContext } from "@/contexts/UserContext";
 
-export default function PostCard() {
+export default function PostCard({
+  content,
+  created_at,
+  profiles: authorProfile,
+}) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const { profile: myProfile } = useContext(UserContext);
   function openDropdown(e) {
     e.stopPropogation;
     setDropdownOpen(true);
@@ -20,7 +27,7 @@ export default function PostCard() {
         <div>
           <Link href={"/profile"}>
             <span href="" className="cursor-pointer">
-              <Avatar />
+              <Avatar url={authorProfile.avatar} />
             </span>
           </Link>
         </div>
@@ -32,16 +39,14 @@ export default function PostCard() {
                 href=""
               >
                 {" "}
-                Safwan{" "}
+                {authorProfile.name}{" "}
               </span>{" "}
             </Link>
-            shared a{" "}
-            <a className="text-socialBlue" href="">
-              {" "}
-              album{" "}
-            </a>
+            shared a post
           </p>
-          <p className="text-gray-500 text-sm">2 hours ago</p>
+          <p className="text-gray-500 text-sm">
+            <ReactTimeAgo date={created_at} />
+          </p>
         </div>
         <div className="relative">
           <button className="text-gray-400" onClick={openDropdown}>
@@ -175,12 +180,7 @@ export default function PostCard() {
         </div>
       </div>
       <div>
-        <p className="my-3 text-sm">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Excepturi
-          placeat vel dolorem nesciunt enim nam ex, facere vitae possimus optio
-          impedit ab in sed, consequuntur temporibus quibusdam dicta aliquam
-          saepe!
-        </p>
+        <p className="my-3 text-sm">{content}</p>
         <div className="flex gap-4">
           <div className="">
             <img
@@ -246,7 +246,7 @@ export default function PostCard() {
       </div>
       <div className="flex mt-4 gap-3">
         <div>
-          <Avatar />
+          <Avatar url={myProfile?.avatar} />
         </div>
         <div className="border grow rounded-full relative">
           <textarea
