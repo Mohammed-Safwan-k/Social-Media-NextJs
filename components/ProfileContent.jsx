@@ -1,14 +1,51 @@
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useEffect, useState } from "react";
 import Card from "./Card";
 import FriendInfo from "./FriendInfo";
 import PostCard from "./PostCard";
 
-export default function ProfileContent({ activeTab }) {
+export default function ProfileContent({ activeTab, userId }) {
+  const [posts, setPosts] = useState([]);
+  const [profile, setProfile] = useState(null);
+  const supabase = useSupabaseClient();
+  useEffect(() => {
+    if (!userId) {
+      return;
+    }
+    if (activeTab === "posts") {
+      loadPosts().then(() => {});
+    }
+  }, [userId]);
+
+  async function loadPosts() {
+    const posts = await userPosts(userId);
+    const profile = await userProfile(userId);
+    setPosts(posts);
+    setProfile(profile);
+  }
+
+  async function userPosts(userId) {
+    const { data } = await supabase
+      .from("posts")
+      .select("id, content, created_at, author")
+      .eq("author", userId);
+    return data;
+  }
+
+  async function userProfile(userId) {
+    const { data } = await supabase.from("profiles").select().eq("id", userId);
+    return data[0];
+  }
+
   return (
     <div>
       {" "}
       {activeTab === "posts" && (
         <div>
-          <PostCard />
+          {posts.length > 0 &&
+            posts.map((post) => (
+              <PostCard key={post.created_at} {...post} profiles={profile} />
+            ))}
         </div>
       )}
       {activeTab === "about" && (

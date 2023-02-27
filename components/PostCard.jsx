@@ -46,7 +46,7 @@ export default function PostCard({
             shared a post
           </p>
           <p className="text-gray-500 text-sm">
-            <ReactTimeAgo date={created_at} />
+            <ReactTimeAgo date={Date.parse(created_at)} />
           </p>
         </div>
         <div className="relative">
@@ -182,7 +182,7 @@ export default function PostCard({
       </div>
       <div>
         <p className="my-3 text-sm">{content}</p>
-        {photos.length > 0 && (
+        {photos?.length > 0 && (
           <div className="flex gap-4">
             {photos.map((photo) => (
               <div className="" key={photo}>
