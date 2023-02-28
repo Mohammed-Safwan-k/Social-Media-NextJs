@@ -1,12 +1,42 @@
 import Layout from "@/components/Layout";
 import PostCard from "@/components/PostCard";
+import { UserContextProvider } from "@/contexts/UserContext";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useEffect, useState } from "react";
 
 export default function SavedPostsPage() {
+  const [posts, setPosts] = useState([]);
+  const supabase = useSupabaseClient();
+  const session = useSession();
+  useEffect(() => {
+    if (!session?.user?.id) {
+      return;
+    }
+    console.log("data");
+    supabase
+      .from("saved_posts")
+      .select("post_id")
+      .eq("user_id", session.user.id)
+      .then((result) => {
+        const postsIds = result.data.map((item) => item.post_id);
+        supabase
+          .from("posts")
+          .select("*,profiles(*)")
+          .in("id", postsIds)
+          .then((result) => setPosts(result.data));
+      });
+  }, [session?.user?.id]);
   return (
     <Layout>
-      <h1 className="text-6xl mb-4 text-gray-400">Saved Posts</h1>
-      <PostCard />
-      <PostCard />
+      <UserContextProvider>
+        <h1 className="text-6xl mb-4 text-gray-400">Saved Posts</h1>
+        {posts.length > 0 &&
+          posts.map((post) => (
+            <div key={post.id}>
+              <PostCard {...post} />
+            </div>
+          ))}
+      </UserContextProvider>
     </Layout>
   );
 }
